@@ -35,15 +35,30 @@
 # View the current list of tasks.
 # The user will interact with the program through menu-driven options (e.g., "Press 1 to add a task", "Press 2 to delete a task", etc.).
 
-class TODo:
-    def __init__(self,name,status):
+class to_do:
+    def __init__(self,name,status="pending"):
         self.name=name
         self.status=status
 
-    def add(self):
-        text_file = open("todo.txt" , "w")
-        text_file.write(self.name)
+    def add(self, task_name):
+        with open("list.txt", "a") as text_file:
+            text_file.write(f"{task_name},pending\n")
     
-    def delete(self):
-        text_file = open("todo.txt","r")
-        text_file
+    def delete(self , task_name):
+        with open("list.txt","r") as text_file:
+            tasks = text_file.readline()
+        with open("list.txt","w") as text_file:
+            for task in tasks:
+                if not task.startswith(task_name):
+                    text_file.write(task)
+
+    def complete(self):
+        self.status = "marked"
+
+    def display_task(self):
+        with open("list.txt","r") as text_file:
+            tasks = text_file.read()
+            print(tasks)
+Task = to_do("task1")
+print(Task.display_task)
+task_numbers=input("Press 1 for Adding task \n Press 2 for Delete the task \n Press 3 for mark complete \n Press 0 for Displaying taskes")
