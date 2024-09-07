@@ -36,21 +36,30 @@
 # The user will interact with the program through menu-driven options (e.g., "Press 1 to add a task", "Press 2 to delete a task", etc.).
 
 class to_do:
-    def __init__(self,name,status="pending"):
+    def __init__(self,number,name,status="pending"):
+        self.number=number
         self.name=name
         self.status=status
 
-    def add(self, task_name):
+    def add(self,number, task_name):
         with open("list.txt", "a") as text_file:
-            text_file.write(f"{task_name},pending\n")
+            text_file.write(f"{number}{task_name},pending\n")
     
-    def delete(self , task_name):
+    def delete(self , number):
         with open("list.txt","r") as text_file:
-            tasks = text_file.readline()
+            tasks = text_file.readlines()
         with open("list.txt","w") as text_file:
+            found=False
             for task in tasks:
-                if not task.startswith(task_name):
+                task_data=task.split(",")
+                if task_data[0] != number:
                     text_file.write(task)
+                else:
+                    found=True
+                if found:
+                    print(f"Task with number {number} deleted sucessfully")
+                else:
+                    print(f"Task with number {number} not found. ")
 
     def complete(self):
         self.status = "marked"
@@ -59,6 +68,30 @@ class to_do:
         with open("list.txt","r") as text_file:
             tasks = text_file.read()
             print(tasks)
-Task = to_do("task1")
-print(Task.display_task)
-task_numbers=input("Press 1 for Adding task \n Press 2 for Delete the task \n Press 3 for mark complete \n Press 0 for Displaying taskes")
+#  Create an instance of the ToDo class
+Task = to_do("1","task1")
+
+# Menu-driven interface with correct input handling
+while True:
+    task_numbers = input(
+        "Press 1 to Add task\nPress 2 to Delete the task\nPress 3 to Mark complete\nPress 0 to Display tasks\nPress any other key to Exit\nAns: ")
+
+    if task_numbers == "1":
+        inf_num = input("Enter the task number: ")
+        inf_name = input("Enter the task name: ")
+        Task.add(inf_num, inf_name)
+
+    elif task_numbers == "2":
+        inf_num = input("Enter the task number to delete: ")
+        Task.delete(inf_num)
+
+    elif task_numbers == "3":
+        inf_num = input("Enter the task number to mark as complete: ")
+        Task.complete(inf_num)
+
+    elif task_numbers == "0":
+        Task.display_task()
+
+    else:
+        print("Exiting the program.")
+        break
