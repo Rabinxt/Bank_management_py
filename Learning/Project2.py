@@ -80,14 +80,20 @@ while True:
         inf_num = input("Enter the task number: ")
         inf_name = input("Enter the task name: ")
         Task.add(inf_num, inf_name)
+        Task.display_task()
+
 
     elif task_numbers == "2":
         inf_num = input("Enter the task number to delete: ")
         Task.delete(inf_num)
+        Task.display_task()
+
 
     elif task_numbers == "3":
         inf_num = input("Enter the task number to mark as complete: ")
         Task.complete(inf_num)
+        Task.display_task()
+
 
     elif task_numbers == "0":
         Task.display_task()
